@@ -13,13 +13,16 @@ public class Person {
     public String firstName;
     @Field
     public String lastName;
+    @Field
+    public String messageText;
 
     public Person() {
     }
 
-    public Person(String firstName, String lastName) {
+    public Person(String firstName, String lastName, String messageText) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.messageText = messageText;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class Person {
             "id='" + id + '\'' +
             "' firstName='" + firstName + '\'' +
             "' lastName='" + lastName + '\'' +
+            "' messageText='" + messageText + '\'' +
             '}';
 
     }
