@@ -23,7 +23,6 @@ public class MessageController {
     public MessageController(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
-    private int counter = 5;
 
     @GetMapping
     public List<Person> list() {
