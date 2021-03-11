@@ -1,15 +1,17 @@
 package kpoberezhniuk.spring.boot.chat.service.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import kpoberezhniuk.spring.boot.chat.service.Person;
 import kpoberezhniuk.spring.boot.chat.service.PersonRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,25 +32,27 @@ public class MessageController {
     }
 
     @GetMapping("{id}")
-    public Optional<Person> getMessage (@PathVariable String id) {
-        return personRepository.findById(id);
+    public Person getOne(@PathVariable("id") Person person) {
+        return person;
     }
 
     @PostMapping
     public Person create(@RequestBody Person person) {
+        person.setCreationTime(LocalDateTime.now());
         return personRepository.save(person);
     }
 
-    /*@PutMapping("{id}")
-    public Map<String, String> update(@PathVariable String id, @RequestBody Map<String, String> message) {
-        Map<String, String> messageFromDb = getMessage(id);
-        messageFromDb.putAll(message);
-        messageFromDb.put("id", id);
-        return messageFromDb;
-    }*/
+    @PutMapping("{id}")
+    public Person update(
+        @PathVariable("id") Person personFromDb,
+        @RequestBody Person person
+    ) {
+        BeanUtils.copyProperties(person, personFromDb, "id");
+        return personRepository.save(personFromDb);
+    }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable String id) {
-        personRepository.deleteById(id);
+    public void delete(@PathVariable("id") Person person) {
+        personRepository.delete(person);
     }
 }

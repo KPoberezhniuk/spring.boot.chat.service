@@ -18,8 +18,8 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) {
         personRepository.deleteAll();
-        personRepository.save(new Person("Alice", "Copper", "text1"));
-        personRepository.save(new Person("John", "Travolta", "text2"));
-        personRepository.save(new Person("Johy", "Moni", "text3"));
+        personRepository.save(new Person());
+        personRepository.save(new Person());
+        personRepository.save(new Person());
     }
 }

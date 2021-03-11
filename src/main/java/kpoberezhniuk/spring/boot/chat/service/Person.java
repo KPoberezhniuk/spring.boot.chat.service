@@ -1,38 +1,67 @@
 package kpoberezhniuk.spring.boot.chat.service;
 
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document
+@ToString(of = {"id", "firstName", "lastName", "messageText"})
+@EqualsAndHashCode(of = {"id"})
 public class Person {
     @Id
-    public String id;
+    private String id;
+    @Field
+    private String firstName;
+    @Field
+    private String lastName;
+    @Field
+    private String messageText;
 
-    @Field
-    public String firstName;
-    @Field
-    public String lastName;
-    @Field
-    public String messageText;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm:ss")
+    private LocalDateTime creationTime;
 
-    public Person() {
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
-    public Person(String firstName, String lastName, String messageText) {
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.messageText = messageText;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-            "id='" + id + '\'' +
-            "' firstName='" + firstName + '\'' +
-            "' lastName='" + lastName + '\'' +
-            "' messageText='" + messageText + '\'' +
-            '}';
+    public String getLastName() {
+        return lastName;
+    }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 }
