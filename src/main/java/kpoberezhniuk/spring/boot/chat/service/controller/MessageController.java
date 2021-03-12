@@ -48,6 +48,7 @@ public class MessageController {
         @RequestBody Person person
     ) {
         BeanUtils.copyProperties(person, personFromDb, "id");
+        personFromDb.setUpdateTime(LocalDateTime.now());
         return personRepository.save(personFromDb);
     }
 
