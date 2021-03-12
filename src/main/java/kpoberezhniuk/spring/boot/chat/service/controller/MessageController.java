@@ -5,8 +5,12 @@ import java.util.List;
 
 import kpoberezhniuk.spring.boot.chat.service.Person;
 import kpoberezhniuk.spring.boot.chat.service.PersonRepository;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.elasticsearch.search.builder.SearchSourceBuilder.searchSource;
 
 @RestController
 @RequestMapping("message")
@@ -40,6 +46,16 @@ public class MessageController {
     public Person create(@RequestBody Person person) {
         person.setCreationTime(LocalDateTime.now());
         return personRepository.save(person);
+    }
+
+    @GetMapping("batch/{limit}")
+    public List<Person> sortByTs (@PathVariable("limit") Integer limit) {
+//        SearchSourceBuilder searchSourceBuilder = searchSource()
+//           .size(limit)
+//            .query(QueryBuilders.matchAllQuery())
+//            .postFilter(QueryBuilders.rangeQuery("setCreationTime"));
+        PageRequest page = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "creationTime"));
+        return personRepository.findAll(page).toList();
     }
 
     @PutMapping("{id}")
