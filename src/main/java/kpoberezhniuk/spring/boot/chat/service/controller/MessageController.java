@@ -5,8 +5,6 @@ import java.util.List;
 
 import kpoberezhniuk.spring.boot.chat.service.Person;
 import kpoberezhniuk.spring.boot.chat.service.PersonRepository;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.elasticsearch.search.builder.SearchSourceBuilder.searchSource;
 
 @RestController
 @RequestMapping("message")
