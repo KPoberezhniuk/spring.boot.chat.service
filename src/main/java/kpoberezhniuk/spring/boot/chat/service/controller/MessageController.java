@@ -46,11 +46,7 @@ public class MessageController {
 
     @GetMapping("batch/{limit}")
     public List<Person> sortByTs (@PathVariable("limit") Integer limit) {
-//        SearchSourceBuilder searchSourceBuilder = searchSource()
-//           .size(limit)
-//            .query(QueryBuilders.matchAllQuery())
-//            .postFilter(QueryBuilders.rangeQuery("setCreationTime"));
-        PageRequest page = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "creationTime"));
+        PageRequest page = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "creationTime"));
         return personRepository.findAll(page).toList();
     }
 
