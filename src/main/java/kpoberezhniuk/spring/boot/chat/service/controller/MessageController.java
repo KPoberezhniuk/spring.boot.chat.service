@@ -1,6 +1,7 @@
 package kpoberezhniuk.spring.boot.chat.service.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import kpoberezhniuk.spring.boot.chat.service.Person;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,6 +35,15 @@ public class MessageController {
         return personRepository.findAll();
     }
 
+    @GetMapping("sortByTime")
+    public List<Person> byTimeRange(@RequestParam(value = "timeFrom") String timeFrom,
+                                    @RequestParam(value = "timeTo") String timeTo) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy'T'HH:mm:ss");
+        LocalDateTime dateTimeFrom = LocalDateTime.parse(timeFrom, formatter);
+        LocalDateTime dateTimeTo = LocalDateTime.parse(timeTo, formatter);
+        return personRepository.findByCreationTimeBetween(dateTimeFrom, dateTimeTo);
+    }
+
     @GetMapping("{id}")
     public Person getOne(@PathVariable("id") Person person) {
         return person;
@@ -44,9 +55,9 @@ public class MessageController {
         return personRepository.save(person);
     }
 
-    @GetMapping("batch/{limit}")
-    public List<Person> sortByTs (@PathVariable("limit") Integer limit) {
-        PageRequest page = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "creationTime"));
+    @GetMapping("batch/{pageNumber}/{pageSize}")
+    public List<Person> sortByPageNumber(@PathVariable("pageSize") Integer pageSize, @PathVariable("pageNumber") Integer pageNumber) {
+        PageRequest page = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "creationTime"));
         return personRepository.findAll(page).toList();
     }
 
