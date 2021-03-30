@@ -39,14 +39,10 @@ public class MessageController {
     public List<Person> byTimeRange(@RequestParam(value = "timeFrom") String timeFrom,
                                     @RequestParam(value = "timeTo") String timeTo) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        //USE_URL_REQUEST: /sortByTime?timeFrom=yyyy-MM-ddTHH:mm&timeTo=yyyy-MM-ddTHH:mm
         LocalDateTime dateTimeFrom = LocalDateTime.parse(timeFrom, formatter);
         LocalDateTime dateTimeTo = LocalDateTime.parse(timeTo, formatter);
         return personRepository.findByCreationTimeBetween(dateTimeFrom, dateTimeTo);
-    }
-
-    @GetMapping("{id}")
-    public Person getOne(@PathVariable("id") Person person) {
-        return person;
     }
 
     @PostMapping
