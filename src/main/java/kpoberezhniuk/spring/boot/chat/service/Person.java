@@ -3,12 +3,14 @@ package kpoberezhniuk.spring.boot.chat.service;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+@Builder(toBuilder = true)
 @Document
 @ToString(of = {"id", "firstName", "lastName", "messageText"})
 @EqualsAndHashCode(of = {"id"})
@@ -22,9 +24,9 @@ public class Person {
     @Field
     private String messageText;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yy HH:mm")
     private LocalDateTime creationTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yy HH:mm")
     private LocalDateTime updateTime;
 
     public LocalDateTime getUpdateTime() {
