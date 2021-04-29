@@ -9,6 +9,7 @@ import kpoberezhniuk.spring.boot.chat.service.Person;
 import kpoberezhniuk.spring.boot.chat.service.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,27 +36,23 @@ public class MessageController {
         return personRepository.findAll();
     }
 
-    @GetMapping("sortByTime")
-    public List<Person> byTimeRange(@RequestParam(value = "timeFrom") String timeFrom,
-                                    @RequestParam(value = "timeTo") String timeTo) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        //USE_URL_REQUEST: /sortByTime?timeFrom=yyyy-MM-ddTHH:mm&timeTo=yyyy-MM-ddTHH:mm
-        LocalDateTime dateTimeFrom = LocalDateTime.parse(timeFrom, formatter);
-        LocalDateTime dateTimeTo = LocalDateTime.parse(timeTo, formatter);
-        return personRepository.findByCreationTimeBetween(dateTimeFrom, dateTimeTo);
-    }
-
     @PostMapping
     public Person create(@RequestBody Person person) {
         person.setCreationTime(LocalDateTime.now());
         return personRepository.save(person);
     }
 
-    @GetMapping("batch/{pageNumber}/{pageSize}")
-    public List<Person> sortByPageSizeAndNumber(@PathVariable("pageSize") Integer pageSize,
-                                                @PathVariable("pageNumber") Integer pageNumber) {
-        PageRequest page = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "creationTime"));
-        return personRepository.findAll(page).toList();
+    @GetMapping("search/{pageNumber}/{pageSize}")
+    public List<Person> sortByTimeAndSize(@PathVariable("pageSize") Integer pageSize,
+                                          @PathVariable("pageNumber") Integer pageNumber,
+                                          @RequestParam(value = "timeFrom") String timeFrom,
+                                          @RequestParam(value = "timeTo") String timeTo) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime dateTimeFrom = LocalDateTime.parse(timeFrom, formatter);
+        LocalDateTime dateTimeTo = LocalDateTime.parse(timeTo, formatter);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "creationTime"));
+        return personRepository.findByCreationTimeBetween(dateTimeFrom, dateTimeTo, pageable).toList();
+        //USE_URL_REQUEST: /search/0/4?timeFrom=2021-03-15T00:00&timeTo=2021-03-23T17:00
     }
 
     @PutMapping("{id}")

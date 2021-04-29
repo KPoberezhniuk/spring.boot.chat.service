@@ -24,9 +24,9 @@ public class Person {
     @Field
     private String messageText;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime updateTime;
 
     public LocalDateTime getUpdateTime() {

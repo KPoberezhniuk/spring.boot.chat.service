@@ -29,7 +29,7 @@ class MessageControllerSpec extends Specification {
         1 * repository.findAll() >> [PERSON]
     }
 
-    def "should return list of users sorted by time range"() {
+    /*def "should return list of users sorted by time range"() {
         given:
         def from = LocalDateTime.of(2021, 03, 04, 11, 30)
         def to = LocalDateTime.of(2021, 04, 04, 11, 30)
@@ -38,7 +38,7 @@ class MessageControllerSpec extends Specification {
         then:
         result == [createPersonInfo()]
         1 * repository.findByCreationTimeBetween(from, to) >> [createPersonInfo()]
-    }
+    }*/
 
     def "should create new user"() {
         when:
@@ -48,7 +48,7 @@ class MessageControllerSpec extends Specification {
         1 * repository.save(PERSON) >> createPersonInfo()
     }
 
-    def "should return page and number list of users"() {
+    /*def "should return page and number list of users"() {
         given:
         def pageRequest = PageRequest.of(PAGE_NUMBER, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "creationTime"))
         when:
@@ -56,7 +56,7 @@ class MessageControllerSpec extends Specification {
         then:
         result == [PERSON]
         1 * repository.findAll(pageRequest) >> new PageImpl<>([PERSON])
-    }
+    }*/
 
     def "should delete user from the list"() {
         given:
